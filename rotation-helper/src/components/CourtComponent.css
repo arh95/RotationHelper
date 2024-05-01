@@ -1,0 +1,20 @@
+.Court {
+    display: flex;
+    flex-direction: column;
+    max-width: 900px;
+    border-radius: 1px;
+    border-style: solid;
+    border-color: black;
+    border-width: 2px;
+    margin: 10px;
+    .FrontRow{
+        justify-content: space-evenly;
+        display: flex;
+        flex-direction: row;
+    }
+    .BackRow{
+        justify-content: space-evenly;
+        display: flex;
+        flex-direction: row;
+    }
+}

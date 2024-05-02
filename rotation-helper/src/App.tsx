@@ -7,7 +7,6 @@ import html2canvas from "html2canvas";
 
 function App() {
 
-  //TODO: 'add player' button
   //TODO: drag and drop players from sidelines to court
   //TODO: link standby player types with their on-court replacements
   //    cont: standby link should also indicate serve or no serve

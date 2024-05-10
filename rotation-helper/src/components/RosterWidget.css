@@ -1,0 +1,4 @@
+.RosterDisplay {
+    display: flex;
+    flex-direction: row wrap;
+}

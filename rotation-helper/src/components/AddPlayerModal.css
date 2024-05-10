@@ -1,0 +1,17 @@
+.ReactModalPortal > div > div {
+    width: 300px;
+    height: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    .AddPlayerModal {
+    width: 95%;
+    align-self: center;
+    }
+}
+
+.AddPlayerModal {
+    width: 95%;
+    align-self: center;
+
+}

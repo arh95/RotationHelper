@@ -1,29 +1,46 @@
 import React, { useRef, useState } from 'react';
 import { Player } from './Player';
-import PlayerOnCourtComponent from './PlayerOnCourtComponent';
-import { Position, getPositionKey } from '../enums/Position';
+import PlayerOnCourtWidget from './PlayerOnCourtWidget';
+import { Position } from '../enums/Position';
 import Button from '@mui/material/Button';
-import './CourtComponent.css';
+
+import './RosterWidget.css';
 import Modal from 'react-modal';
 import AddPlayerModal from './AddPlayerModal';
+import PlayerInRosterWidget from './PlayerInRosterWidget';
 
 function Roster() {
-    const rosterList = useRef(new Array());
+    //TODO: this roster list gets 
+    const [rosterList, setRosterList] = useState(new Array<Player>());
     const [showAddPlayerModal, setShowAddPlayerModal] = useState(false);
 
+    //TODO: add collapse/expand roster section controls (introduce accordion panel?)
 
-    function sortRosterListByPosition() {
+    function sortedRosterList() {
+
+    }
+
+    function addPlayerToRoster(newPlayer: Player) {
+
         let rosterListCopy: Player[] = [];
-        Object.keys(Position).forEach((key, index) => {
+        Position.getValidPositions().forEach((position) => {
+            console.log(position.getLabel);
             let playersOfType: Player[] = [];
-            for (let player of rosterList.current) {
-                if (getPositionKey(player.getPlayerType) === key) {
+            for (let player of rosterList) {
+                if (player.getPlayerType().key == position.key) {
                     playersOfType.push(player);
                 }
             }
-            rosterListCopy.concat(playersOfType);
+            if (newPlayer.getPlayerType() == position) {
+                console.log("MATCH");
+                playersOfType.push(newPlayer);
+            }
+            rosterListCopy = rosterListCopy.concat(playersOfType);
         });
-        rosterList.current = rosterListCopy;
+        console.log(rosterListCopy);
+        setRosterList(rosterListCopy);
+        console.log(rosterList);
+        displayAddPlayerModal(false);
     }
 
     function displayAddPlayerModal(showModal: boolean) {
@@ -40,17 +57,17 @@ function Roster() {
 
     return (
         <div className="RosterWidget">
+
             <div className='RosterDisplay'>
-                <h3>My Roster</h3>
 
-            </div>
-            <div className='AddPlayerButton'>
-
+                {rosterList.map((player: Player, index) => (
+                    <PlayerInRosterWidget key={index} player={player} />
+                ))}
             </div>
             <Button id='showModal' onClick={() => displayAddPlayerModal(true)}>
                 Add Player
             </Button>
-            <AddPlayerModal isOpen={showAddPlayerModal} cancelAction={(value:boolean) => {displayAddPlayerModal(value)}} submitAction={(value:boolean) => {displayAddPlayerModal(value)}}/>
+            <AddPlayerModal isOpen={showAddPlayerModal} cancelAction={(value: boolean) => { displayAddPlayerModal(value) }} submitAction={(value: Player) => { addPlayerToRoster(value) }} />
         </div>
     );
 }

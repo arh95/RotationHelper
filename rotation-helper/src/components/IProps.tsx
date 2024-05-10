@@ -10,5 +10,5 @@ export interface IPlayerProps {
 export interface IModalProps {
     isOpen: boolean,
     cancelAction:(val:boolean)=>void, 
-    submitAction:(val:boolean)=>void,
+    submitAction:(val:Player)=>void,
 }

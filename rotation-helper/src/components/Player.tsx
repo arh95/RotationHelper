@@ -5,73 +5,120 @@ export class Player {
     playerType: Position;
     currentPosition: number;
     usedInRotation: boolean = false;
-    playerLink: Player | undefined = undefined;
+    playerLink: Player;
     serve: boolean = true;
+    num:number;
+    numberProvided: boolean = false;
+    //TODO: implement (optional) player number, if the field was filled out on creation, then display that info.
+    //otherwise, auto-increment the player id starting from the lowest available number on the current team
+
 
     //  id:number;
     //TODO use mongoDB for player ids, like i did for chess games
 
     constructor(name: String, playerType: Position, currentPosition: number) {
+        //todo: figure out currentPosition value, is it like player number? or is it like, rotation location?
         this.name = name;
         this.playerType = playerType;
         this.currentPosition = currentPosition;
     }
 
     /**
-     * hasPlayerLink defines a substitution connection between this player and a different player. The type of the player object
+     * hasPlayerLink defines a substitution connection between this player and a different player. The Position type of the player object
      * will be used to determine what occurs when this player rotates/transitions between the front and back rows
      */
     public hasPlayerLink(): boolean {
         return this.playerLink !== undefined;
     }
 
-    set setName(name: String) {
+    public setName(name: String) {
         this.name = name;
     }
-    get getName(): String {
+    public getName(): String {
         return this.name;
     }
 
-    set setPlayerType(playerType: Position) {
+    public setPlayerType(playerType: Position) {
         this.playerType = playerType;
     }
 
-    get getPlayerType(): Position {
+    public getPlayerType(): Position {
         return this.playerType;
     }
 
-    set setCurrentPosition(currentPosition: number) {
+
+    //rotation position
+    public setCurrentPosition(currentPosition: number) {
         this.currentPosition = currentPosition;
     }
 
-    get getCurrentPosition(): number {
+    public getCurrentPosition(): number {
         return this.currentPosition;
     }
 
-    set setInRotation(value: boolean) {
+    public setInRotation(value: boolean) {
         this.usedInRotation = value;
     }
 
-    get isInRotation(): boolean {
+    public isInRotation(): boolean {
         return this.usedInRotation;
     }
 
-    set setServe(willServe: boolean) {
+    public setServe(willServe: boolean) {
         this.serve = willServe;
     }
 
-    get isServing(): boolean {
+    public isServing(): boolean {
         return this.serve;
     }
 
-    get getPlayerLink():Player | undefined {
+    public getPlayerLink():Player | undefined {
         return this.playerLink;
     }
 
-    set setPlayerLink(player:Player)
+    public setPlayerLink(player:Player)
     {
         this.playerLink = player;
     }
+
+    public getNumber():number {
+        return this.num;
+    }
+
+    public setNumber(num:number) {
+        this.num = num;
+    }
+
+
+    public setPlayerNumber(num:number, providedByUser:boolean)
+    {
+        this.num = num;
+        this.numberProvided = providedByUser;
+    }
+
+    public toString():string {
+        return JSON.stringify(this);
+    }
+
+
+    public static revive(playerToRevive:Player):Player {
+
+        return this.reviveRecursive(playerToRevive, false);
+    }
+
+    private static reviveRecursive(playerToRevive:Player, isPlayerLink:boolean):Player
+    {
+        let revivedPosition = Position.revive(playerToRevive.playerType);
+        let revivedPlayer = new Player(playerToRevive.name, revivedPosition, playerToRevive.currentPosition);
+        revivedPlayer.setInRotation(playerToRevive.usedInRotation);
+        revivedPlayer.setNumber(playerToRevive.num);
+        revivedPlayer.setServe(playerToRevive.serve);
+        if (!isPlayerLink && playerToRevive.playerLink !== undefined) {
+            revivedPlayer.setPlayerLink(this.reviveRecursive(playerToRevive.playerLink, true));
+        }
+        return revivedPlayer;
+    }
+
 
 
 }

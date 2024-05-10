@@ -7,14 +7,20 @@
     border-color: black;
     border-width: 2px;
     margin: 10px;
-    .FrontRow{
+    .Row{
         justify-content: space-evenly;
         display: flex;
-        flex-direction: row;
-    }
-    .BackRow{
-        justify-content: space-evenly;
-        display: flex;
-        flex-direction: row;
+        flex-direction: row;       
+        .AlignedColumn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            
+        }
     }
 }
+
+.PlayerBlock {
+    width: 94px;
+    height: 75px;
+} 

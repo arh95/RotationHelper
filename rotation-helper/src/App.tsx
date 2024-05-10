@@ -49,7 +49,7 @@ function App() {
       </h2>
       <CourtComponent />
       <Button onClick={exportRotation}>
-        Screenshot Mode
+        Save Rotation Snapshot
       </Button>
       {
         /*

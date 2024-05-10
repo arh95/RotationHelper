@@ -7,6 +7,7 @@ This repo is currently integrated with AWS Amplify, and you can access a deploye
 
 
 **-------------------**
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

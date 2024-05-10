@@ -1,9 +1,12 @@
 **WIP**
 
-The Rotation Helper is meant to be a tool for volleyball captains to easily draw up different rotations of their players, including substitutions and liberos, on the go. The intent is to deploy this app as a mobile-optimized web page that I can distribute to my local volleyball rec league.
+The Rotation Helper is meant to be a tool for volleyball captains to easily draw up different rotations of their players, including substitutions and liberos, on the go. The intent is to deploy this app as a mobile-optimized web page that I can distribute to my local volleyball rec league. 
 
-# Getting Started with Create React App
+This repo is currently integrated with AWS Amplify, and you can access a deployed version of the main branch's latest code here: https://main.d3qbeni7s82jdw.amplifyapp.com 
 
+
+
+**-------------------**
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

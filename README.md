@@ -4,17 +4,17 @@ The Rotation Helper is meant to be a tool for volleyball captains to easily draw
 
 This repo is currently integrated with AWS Amplify, and you can access a deployed version of the main branch's latest code here: https://main.d3qbeni7s82jdw.amplifyapp.com
 
-Explanation of Volleyball Rotations: 
+Explanation of Volleyball Rotations: <br/>
 https://www.ncaa.com/news/volleyball-women/article/2023-07-09/college-volleyball-rotation-explained
 
-Explanation of player positions:
+Explanation of player positions:<br/>
 https://hoovermetcomplex.com/back-to-basics-volleyball-player-positions/
 
-Planned Features:
-Styling in line with DCPVL Style Guide (https://tinyurl.com/yc76rcsx) and DCPVL organization website (https://dcpvl.org), both resources developed by Brian Tucker
-Serve/Receive Toggle to view the players on court at different moments in time
-Support for choosing rotation type and providing suggested player type placeholders
-Automatic toggling between defensive subsititution players and their linked counterparts
+Planned Features:<br/>
+Styling in line with DCPVL Style Guide (https://tinyurl.com/yc76rcsx) and DCPVL organization website (https://dcpvl.org), both resources developed by Brian Tucker<br/>
+Serve/Receive Toggle to view the players on court at different moments in time<br/>
+Support for choosing rotation type and providing suggested player type placeholders<br/>
+Automatic toggling between defensive subsititution players and their linked counterparts<br/>
 
 
 

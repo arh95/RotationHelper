@@ -1,4 +1,5 @@
 .RosterDisplay {
     display: flex;
-    flex-direction: row wrap;
+    flex-flow: row wrap;
+    justify-content: space-evenly;
 }

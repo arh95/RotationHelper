@@ -4,11 +4,11 @@ export class Player {
     name: String;
     playerType: Position;
     currentPosition: number;
-    usedInRotation: boolean = false;
+    onCourt: boolean = false;
     playerLink: Player;
-    serve: boolean = true;
+    serving: boolean = true;
     num:number;
-    numberProvided: boolean = false;
+
     //TODO: implement (optional) player number, if the field was filled out on creation, then display that info.
     //otherwise, auto-increment the player id starting from the lowest available number on the current team
 
@@ -22,6 +22,7 @@ export class Player {
         this.playerType = playerType;
         this.currentPosition = currentPosition;
     }
+
 
     /**
      * hasPlayerLink defines a substitution connection between this player and a different player. The Position type of the player object
@@ -56,20 +57,20 @@ export class Player {
         return this.currentPosition;
     }
 
-    public setInRotation(value: boolean) {
-        this.usedInRotation = value;
+    public setOnCourt(onCourt: boolean) {
+        this.onCourt = onCourt;
     }
 
-    public isInRotation(): boolean {
-        return this.usedInRotation;
+    public isOnCourt(): boolean {
+        return this.onCourt;
     }
 
-    public setServe(willServe: boolean) {
-        this.serve = willServe;
+    public setServing(serving: boolean) {
+        this.serving = serving;
     }
 
     public isServing(): boolean {
-        return this.serve;
+        return this.serving;
     }
 
     public getPlayerLink():Player | undefined {
@@ -89,36 +90,7 @@ export class Player {
         this.num = num;
     }
 
-
-    public setPlayerNumber(num:number, providedByUser:boolean)
-    {
-        this.num = num;
-        this.numberProvided = providedByUser;
-    }
-
     public toString():string {
         return JSON.stringify(this);
     }
-
-
-    public static revive(playerToRevive:Player):Player {
-
-        return this.reviveRecursive(playerToRevive, false);
-    }
-
-    private static reviveRecursive(playerToRevive:Player, isPlayerLink:boolean):Player
-    {
-        let revivedPosition = Position.revive(playerToRevive.playerType);
-        let revivedPlayer = new Player(playerToRevive.name, revivedPosition, playerToRevive.currentPosition);
-        revivedPlayer.setInRotation(playerToRevive.usedInRotation);
-        revivedPlayer.setNumber(playerToRevive.num);
-        revivedPlayer.setServe(playerToRevive.serve);
-        if (!isPlayerLink && playerToRevive.playerLink !== undefined) {
-            revivedPlayer.setPlayerLink(this.reviveRecursive(playerToRevive.playerLink, true));
-        }
-        return revivedPlayer;
-    }
-
-
-
 }

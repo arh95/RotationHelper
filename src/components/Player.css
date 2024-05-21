@@ -1,14 +1,15 @@
 .Player {
-    margin: 2px;
     border-radius: 3px;
-    border-style: dashed;
-    border-width: 1px;
+    align-items: center ;
+    padding-top: 4px;
     display: flex;
     flex-direction: column;
-    align-items: center ;
-    width: 33%;
+    justify-content: space-between;
+    width: 92px;
+    
     .PlayerName {
         margin-bottom: 2px;
+        text-overflow: ellipsis;
     }
     .PlayerType {
         margin-top: 2px;

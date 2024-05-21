@@ -1,6 +1,5 @@
 import React, { MutableRefObject, useRef, useState } from 'react';
 import { Player } from './Player';
-import PlayerOnCourtWidget from './PlayerOnCourtWidget';
 import { Position } from '../enums/Position';
 import './CourtComponent.css';
 import './Player.css';
@@ -8,6 +7,9 @@ import './../enums/Position.css';
 import Button from '@mui/material/Button';
 import Roster from './RosterWidget';
 import { List } from '@mui/material';
+import { DragAndDropPlayer } from './DragAndDropPlayer';
+import PlayerWidget from './PlayerWidget';
+import { Source } from '../enums/Source';
 
 function CourtComponent() {
 
@@ -46,8 +48,9 @@ function CourtComponent() {
   function isPlayerActive(newPlayer: Player): boolean {
     let activePlayers: Player[] = playersOnCourt.concat(standbyPlayers);
     let isActive: boolean = false;
-    activePlayers.forEach(player => {
-      if (player === newPlayer) {
+    if (activePlayers.length === 0) return false;
+    activePlayers.filter((player: Player) => player !== undefined).forEach((player: Player) => {
+      if (player.getNumber() === newPlayer.getNumber()) {
         isActive = true;
       }
     });
@@ -59,12 +62,19 @@ function CourtComponent() {
   function dropOntoCourt(event: React.DragEvent, position: number) {
 
     console.log(event);
-    debugger;
-    let player: Player = Player.revive(JSON.parse(event.dataTransfer.getData('player-data')));
+    let playerJson: DragAndDropPlayer = JSON.parse(event.dataTransfer.getData('player-data'));
+    let player: Player = new DragAndDropPlayer(playerJson);
+    player.setPlayerType(Position.revive(playerJson.playerType));
 
     console.log("playersOnCourt value at index: " + playersOnCourt[position]);
     if (isPlayerActive(player)) {
-      alert("Player is already on the court or on standby")
+      alert("Player is already on the court or on standby");
+    } else if (playerJson.source === Source.COURT.toString()) {
+      //TODO: this case could be a swap function implemented down the line
+      //would need to clear out libero connections IF affected b/c that is determined by rotational logic
+      //(look up rules around libero coming in for different player)
+      alert("Cannot duplicate players already on the court");
+
     } else if (playersOnCourt[position] !== undefined) {
       alert("This position is already taken. Shift the existing player somewhere else if you'd like to set a new player to this spot.");
     }
@@ -103,83 +113,86 @@ function CourtComponent() {
       <Roster />
       <div className='Court' id='court-widget'>
         <div className='Row'>
-          <div className='AlignedColumn'>
-            <div className='PlayerBlock' id="Position4" onDrop={drag => dropOntoCourt(drag, 3)} onDragOver={handleDragOver}>
-              {playersOnCourt[3] !== undefined &&
-                <div>
 
-                  <PlayerOnCourtWidget player={playersOnCourt[3] as Player} key={3} />
+          <div className='PlayerBlock' id="Position4" onDrop={drag => dropOntoCourt(drag, 3)} onDragOver={handleDragOver}>
+            {playersOnCourt[3] !== undefined &&
+              <div>
 
-                </div>
-              }
-              {playersOnCourt[3] === undefined &&
-                <p>Position 4</p>
-              }
-            </div>
+                <PlayerWidget player={playersOnCourt[3] as Player} key={3} source={Source.COURT} />
 
-            <div className='PlayerBlock' id="Position5" onDrop={drag => dropOntoCourt(drag, 4)} onDragOver={handleDragOver}>
-              {playersOnCourt[4] !== undefined &&
-                <div>
-                  <PlayerOnCourtWidget player={playersOnCourt[4]} key={4} />
-
-                </div>
-              }
-              {playersOnCourt[4] === undefined &&
-                <p>Position 5</p>
-              }
-            </div>
+              </div>
+            }
+            {playersOnCourt[3] === undefined &&
+              <p>Position 4</p>
+            }
           </div>
 
-          <div className='AlignedColumn'>
-            <div className='PlayerBlock'  id="Position3" onDrop={drag => dropOntoCourt(drag, 2)} onDragOver={handleDragOver}>
-              {playersOnCourt[2] !== undefined &&
-                <div>
-                  <PlayerOnCourtWidget player={playersOnCourt[2]} key={2} />
+          <div className='PlayerBlock' id="Position3" onDrop={drag => dropOntoCourt(drag, 2)} onDragOver={handleDragOver}>
+            {playersOnCourt[2] !== undefined &&
+              <div>
+                <PlayerWidget player={playersOnCourt[2]} key={2} source={Source.COURT} />
 
-                </div>
-              }
-              {playersOnCourt[2] === undefined &&
-                <p>Position 3</p>
-              }
-            </div>
-            <div className='PlayerBlock' id="Position6" onDrop={drag => dropOntoCourt(drag, 5)} onDragOver={handleDragOver}>
-              {playersOnCourt[5] !== undefined &&
-                <div>
-                  <PlayerOnCourtWidget player={playersOnCourt[5]} key={5} />
+              </div>
+            }
+            {playersOnCourt[2] === undefined &&
+              <p>Position 3</p>
+            }
+          </div>
+          <div className='PlayerBlock' id="Position2" onDrop={drag => dropOntoCourt(drag, 1)} onDragOver={handleDragOver}>
+            {playersOnCourt[1] !== undefined &&
+              <div>
+                <PlayerWidget player={playersOnCourt[1]} key={1} source={Source.COURT} />
 
-                </div>
-              }
-              {playersOnCourt[5] === undefined &&
-                <p className=''>Position 6</p>
-              }
-            </div>
+              </div>
+            }
+
+            {playersOnCourt[1] === undefined &&
+              <p>Position 2</p>
+            }
+          </div>
+        </div>
+        <div className='Row'>
+
+          <div className='PlayerBlock' id="Position5" onDrop={drag => dropOntoCourt(drag, 4)} onDragOver={handleDragOver}>
+            {playersOnCourt[4] !== undefined &&
+              <div>
+                <PlayerWidget player={playersOnCourt[4]} key={4} source={Source.COURT} />
+
+              </div>
+            }
+            {playersOnCourt[4] === undefined &&
+              <p>Position 5</p>
+            }
           </div>
 
-          <div className='AlignedColumn'>
-            <div className='PlayerBlock' id="Position2" onDrop={drag => dropOntoCourt(drag, 1)} onDragOver={handleDragOver}>
-              {playersOnCourt[1] !== undefined &&
-                <div>
-                  <PlayerOnCourtWidget player={playersOnCourt[1]} key={1} />
 
-                </div>
-              }
+          <div className='PlayerBlock' id="Position6" onDrop={drag => dropOntoCourt(drag, 5)} onDragOver={handleDragOver}>
+            {playersOnCourt[5] !== undefined &&
+              <div>
+                <PlayerWidget player={playersOnCourt[5]} key={5} source={Source.COURT} />
 
-              {playersOnCourt[1] === undefined &&
-                <p>Position 2</p>
-              }
-            </div>
-            <div id="Position1" className='PlayerBlock Service' onDrop={drag => dropOntoCourt(drag, 0)} onDragOver={handleDragOver}>
-              {playersOnCourt[0] !== undefined &&
-                <div>
-                  <PlayerOnCourtWidget player={playersOnCourt[0]} key={0} />
-
-                </div>
-              }
-              {playersOnCourt[0] === undefined &&
-                <p>Position 1</p>
-              }
-            </div>
+              </div>
+            }
+            {playersOnCourt[5] === undefined &&
+              <p className=''>Position 6</p>
+            }
           </div>
+
+
+
+
+          <div id="Position1" className='PlayerBlock Service' onDrop={drag => dropOntoCourt(drag, 0)} onDragOver={handleDragOver}>
+            {playersOnCourt[0] !== undefined &&
+              <div>
+                <PlayerWidget player={playersOnCourt[0]} key={0} source={Source.COURT} />
+
+              </div>
+            }
+            {playersOnCourt[0] === undefined &&
+              <p>Position 1</p>
+            }
+          </div>
+
         </div>
         {/* 
 TODO: this will  be a toggle button, to display ALL subsitution links, or to display ONLY the players on the court in a given rotation

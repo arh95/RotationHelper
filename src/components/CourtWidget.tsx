@@ -14,14 +14,19 @@ import { Source } from '../enums/Source';
 function Court() {
 
   //USE ONE LIST OF PLAYERS FOR BOTH AREAS
-    //COURT: CAN DRAG AND DROP FROM STANDBY TO COURT
-    //ROSTER: NO DRAG AND DROP, JUST LISTS PLAYERS AND ALLOWS YOU TO EDIT THEM
+  //COURT: CAN DRAG AND DROP FROM STANDBY TO COURT
+  //ROSTER: NO DRAG AND DROP, JUST LISTS PLAYERS AND ALLOWS YOU TO EDIT THEM
 
   //TODO: save configurations by name in database?
   const [playersOnCourt, setPlayersOnCourt] = useState<Array<Player>>([undefined, undefined, undefined, undefined, undefined, undefined]);
   //TODO: implement display of standby players (blocked by player links);
   const [standbyPlayers, setStandbyPlayers] = useState<Array<Player>>([]);
   const isServeReceive: MutableRefObject<boolean> = useRef(false);
+
+  const rotations = ["4-2", "5-1", "6-2", "Other"];
+  const setFromLocations = ["L", "M", "R"];
+  //'set from' locations determines the positions you need to fill on the court
+  //Impl note: for first iteration, will take effect for ALL setters on the court
 
 
   //IDEA FOR DERAG AND DROP
@@ -30,17 +35,17 @@ function Court() {
   //how to implement? --> also, how to incorporate styling indicating the slots
 
 
-  function rotatePlayers(isForwards:boolean) {
+  function rotatePlayers(isForwards: boolean) {
 
     let rotatedPlayers: Player[] = new Array<Player>(6);
-    if (isForwards){
+    if (isForwards) {
       rotatedPlayers[0] = playersOnCourt[1];
       rotatedPlayers[1] = playersOnCourt[2];
       rotatedPlayers[2] = playersOnCourt[3];
       rotatedPlayers[3] = playersOnCourt[4];
       rotatedPlayers[4] = playersOnCourt[5];
       rotatedPlayers[5] = playersOnCourt[0];
-    }  else {
+    } else {
       rotatedPlayers[0] = playersOnCourt[5];
       rotatedPlayers[1] = playersOnCourt[0];
       rotatedPlayers[2] = playersOnCourt[1];
@@ -50,6 +55,45 @@ function Court() {
     }
 
     setPlayersOnCourt(rotatedPlayers);
+  }
+
+  function setRotation(event:React.ChangeEvent<HTMLSelectElement>)
+  {
+    let rotation = event.target.value;
+    let dummiesToAdd:Player[] = [];
+    if (rotation === rotations[0]) {
+      let dummySetter:Player = new Player("", Position.SETTER);
+      let dummyOutside:Player = new Player("", Position.OUTSIDE);
+      let dummyMiddle:Player = new Player("", Position.MIDDLE);
+      dummiesToAdd.push(dummySetter);
+      dummiesToAdd.push(dummyOutside);
+      dummiesToAdd.push(dummyMiddle);
+      dummiesToAdd.push(dummySetter);
+      dummiesToAdd.push(dummyOutside);
+      dummiesToAdd.push(dummyMiddle);
+    } else if (rotation === rotations[1]) {
+      let dummySetter:Player = new Player("", Position.SETTER);
+      let dummyOutside:Player = new Player("", Position.OUTSIDE);
+      let dummyMiddle:Player = new Player("", Position.MIDDLE);
+      let dummyOpposite:Player = new Player("", Position.OPPO);
+      dummiesToAdd.push(dummySetter);
+      dummiesToAdd.push(dummyOutside);
+      dummiesToAdd.push(dummyMiddle);
+      dummiesToAdd.push(dummyOpposite);
+      dummiesToAdd.push(dummyOutside);
+      dummiesToAdd.push(dummyMiddle);
+    }
+
+    prepDummyPlayers(dummiesToAdd);
+    setPlayersOnCourt(dummiesToAdd);
+  }
+
+  function prepDummyPlayers(players:Player[])
+  {
+    players.forEach((player:Player) => {
+      player.setDummy(true);
+      player.setId(-1);
+    });
   }
 
   //TOOD: implement method to swap standby players wiht on court counterparts at appropriate moments
@@ -74,7 +118,7 @@ function Court() {
     let isActive: boolean = false;
     if (activePlayers.length === 0) return false;
     activePlayers.filter((player: Player) => player !== undefined).forEach((player: Player) => {
-      if (player.getNumber() === newPlayer.getNumber()) {
+      if (player.getId() === newPlayer.getId()) {
         isActive = true;
       }
     });
@@ -101,7 +145,11 @@ function Court() {
       alert("Cannot duplicate players already on the court");
 
     } else if (playersOnCourt[position] !== undefined) {
-      alert("This position is already taken. Shift the existing player somewhere else if you'd like to set a new player to this spot.");
+      if (!playersOnCourt[position].isDummy()) {
+        alert("This position is already taken. Shift the existing player somewhere else if you'd like to set a new player to this spot.");
+      } else {
+
+      }
     }
     else if (playersOnCourt[position] === undefined) {
       let arrayToSet: Player[] = [];
@@ -123,8 +171,6 @@ function Court() {
   }
 
 
-
-
   //TODO: add 'Do it For me!' option where you can just drag the players you want to use (or tag them as S1/S2/S3 etc etc etc)
   //and then using the prioritization and the default of "setter serves first" populate the court
 
@@ -132,8 +178,29 @@ function Court() {
   //TODO: S/OPP/M1/M2/OH1/OH2 type placeholders until user has dropped a player into a given position
   return (
     //TODO: implement sidelines to display substitute players while they are not on court
+
+    //TODO: implement reset functionality
+
+    //TODO: implement select with rotation types (4-2, 5-1, 6-2, other)
+    //when other selected, just let drag and drop as norma;
+    //otherwise, add placeholder players of specific types
+    //allow drag+drop to delete those placeholder players, but only with a specific type selected
+
+
+    //TODO: Setter location switch for when there is a setter in front row (impacts above)
+    //so can set it that setter sets from right, middle, or left
     <div id="rotation-widget">
       <h2>On The Court</h2>
+      <label>Choose a rotation:
+        <select id='PositionSelect' defaultValue={Position.NONE.getKey} onChange={(event) => setRotation(event)}>
+          <option value={Position.NONE.getKey} disabled>Rotation</option>
+          {rotations.map((item:string) => ( 
+            <option value={item}>
+              {item}
+            </option>
+          ))}
+        </select>
+      </label>
       <div className='Court' id='court-widget'>
 
         <div className='Row'>
@@ -142,7 +209,7 @@ function Court() {
             {playersOnCourt[3] !== undefined &&
               <div>
 
-                <PlayerWidget player={playersOnCourt[3] as Player} key={3} location={Source.COURT} />
+                <PlayerWidget player={playersOnCourt[3] as Player} key={3} location={Source.COURT} draggable={playersOnCourt[3] !== undefined &&  !playersOnCourt[3].isDummy()} />
 
               </div>
             }
@@ -154,7 +221,7 @@ function Court() {
           <div className='PlayerBlock' id="Position3" onDrop={drag => dropOntoCourt(drag, 2)} onDragOver={handleDragOver}>
             {playersOnCourt[2] !== undefined &&
               <div>
-                <PlayerWidget player={playersOnCourt[2]} key={2} location={Source.COURT} />
+                <PlayerWidget player={playersOnCourt[2]} key={2} location={Source.COURT} draggable={playersOnCourt[2] !== undefined &&  !playersOnCourt[2].isDummy()} />
 
               </div>
             }
@@ -162,10 +229,10 @@ function Court() {
               <p>Position 3</p>
             }
           </div>
-          <div className='PlayerBlock' id="Position2" onDrop={drag => dropOntoCourt(drag, 1)} onDragOver={handleDragOver}>
+          <div className='PlayerBlock' id="Position2" onDrop={drag => dropOntoCourt(drag, 1)} onDragOver={handleDragOver} >
             {playersOnCourt[1] !== undefined &&
               <div>
-                <PlayerWidget player={playersOnCourt[1]} key={1} location={Source.COURT} />
+                <PlayerWidget player={playersOnCourt[1]} key={1} location={Source.COURT} draggable={playersOnCourt[1] !== undefined &&  !playersOnCourt[1].isDummy()}/>
 
               </div>
             }
@@ -180,7 +247,7 @@ function Court() {
           <div className='PlayerBlock' id="Position5" onDrop={drag => dropOntoCourt(drag, 4)} onDragOver={handleDragOver}>
             {playersOnCourt[4] !== undefined &&
               <div>
-                <PlayerWidget player={playersOnCourt[4]} key={4} location={Source.COURT} />
+                <PlayerWidget player={playersOnCourt[4]} key={4} location={Source.COURT} draggable={playersOnCourt[4] !== undefined &&  !playersOnCourt[4].isDummy()}/>
 
               </div>
             }
@@ -193,7 +260,7 @@ function Court() {
           <div className='PlayerBlock' id="Position6" onDrop={drag => dropOntoCourt(drag, 5)} onDragOver={handleDragOver}>
             {playersOnCourt[5] !== undefined &&
               <div>
-                <PlayerWidget player={playersOnCourt[5]} key={5} location={Source.COURT} />
+                <PlayerWidget player={playersOnCourt[5]} key={5} location={Source.COURT} draggable={playersOnCourt[5] !== undefined &&  !playersOnCourt[5].isDummy()}/>
 
               </div>
             }
@@ -208,7 +275,7 @@ function Court() {
           <div id="Position1" className='PlayerBlock Service' onDrop={drag => dropOntoCourt(drag, 0)} onDragOver={handleDragOver}>
             {playersOnCourt[0] !== undefined &&
               <div>
-                <PlayerWidget player={playersOnCourt[0]} key={0} location={Source.COURT} />
+                <PlayerWidget player={playersOnCourt[0]} key={0} location={Source.COURT} draggable={playersOnCourt[0] !== undefined &&  !playersOnCourt[0].isDummy()}/>
 
               </div>
             }

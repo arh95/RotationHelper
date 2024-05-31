@@ -18,6 +18,7 @@ export interface IRosterProps {
 export interface IDragAndDropProps {
     player: Player
     location: Source
+    draggable: boolean,
     key: number
 }
 

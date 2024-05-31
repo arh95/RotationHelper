@@ -13,7 +13,10 @@ export class Player {
     playerServeIndex:number = 0;
     
     serving: boolean = true;
-    num:number;
+    dummy: boolean = false;
+
+
+    // num:number;
     id:number = 1;
 
     //TODO: implement (optional) player number, if the field was filled out on creation, then display that info.
@@ -43,6 +46,14 @@ export class Player {
     }
     public getName(): String {
         return this.name;
+    }
+
+    public setDummy(dummy:boolean){
+        this.dummy = dummy;
+    }
+
+    public isDummy():boolean {
+        return this.dummy;
     }
 
     public setPlayerType(playerType: Position) {
@@ -87,13 +98,13 @@ export class Player {
         this.playerLink = player;
     }
 
-    public getNumber():number {
-        return this.num;
-    }
+    // public getNumber():number {
+    //     return this.num;
+    // }
 
-    public setNumber(num:number) {
-        this.num = num;
-    }
+    // public setNumber(num:number) {
+    //     this.num = num;
+    // }
 
     public setId(id:number) {
         this.id = id;

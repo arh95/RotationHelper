@@ -18,38 +18,39 @@ function Roster({players, key}: IRosterProps) {
     //TODO: add collapse/expand roster section controls (introduce accordion panel?)
 
     function sortRosterList(list: Player[]) {
-        list.sort((a: Player, b: Player) => a.getNumber() - b.getNumber());
+        list.sort((a: Player, b: Player) => a.getId() - b.getId());
     }
 
-    //this function is intended to run after a player has been created but BEFORE that player gets assigned a number and added to the roster list
-    function generatePlayerNumber(): number {
-        if (rosterList.length === 0) {
-            //if no other players are in the roster list, then we can start at 1 for the player number
-            return 1;
-        }
-        else {
-            console.log("iterating through existing players to find their number");
-            let rosterListCopy: Player[] = [];
-            for (let player of rosterList) {
-                rosterListCopy.push(player);
-            }
-            sortRosterList(rosterListCopy);
-            let lowestAvailableNumber: number = 1;
-            for (let i = 0; i < rosterListCopy.length; i++) {
-                if (rosterListCopy[i].getNumber() === lowestAvailableNumber) {
-                    lowestAvailableNumber++;
-                }
-                else {
-                    //if in the array sorted by player number, we find a Player whose number does not equal our incremental
-                    //tracker, that means that we can use our tracker's value as the number
-                    return lowestAvailableNumber;
-                }
-            }
-            //if we reach the end of the array without finding a number that is free for use, use the incremented value which 
-            //should not be present in the array
-            return lowestAvailableNumber;
-        }
-    }
+    // //this function is intended to run after a player has been created but BEFORE that player gets assigned a number and added to the roster list
+    // function generatePlayerNumber(): number {
+    //     //TODO: correct/implement
+    //     if (rosterList.length === 0) {
+    //         //if no other players are in the roster list, then we can start at 1 for the player number
+    //         return 1;
+    //     }
+    //     else {
+    //         console.log("iterating through existing players to find their number");
+    //         let rosterListCopy: Player[] = [];
+    //         for (let player of rosterList) {
+    //             rosterListCopy.push(player);
+    //         }
+    //         sortRosterList(rosterListCopy);
+    //         let lowestAvailableNumber: number = 1;
+    //         for (let i = 0; i < rosterListCopy.length; i++) {
+    //             if (rosterListCopy[i].get() === lowestAvailableNumber) {
+    //                 lowestAvailableNumber++;
+    //             }
+    //             else {
+    //                 //if in the array sorted by player number, we find a Player whose number does not equal our incremental
+    //                 //tracker, that means that we can use our tracker's value as the number
+    //                 return lowestAvailableNumber;
+    //             }
+    //         }
+    //         //if we reach the end of the array without finding a number that is free for use, use the incremented value which 
+    //         //should not be present in the array
+    //         return lowestAvailableNumber;
+    //     }
+    // }
 
 function dropOntoRoster(event: React.DragEvent) {
     
@@ -97,8 +98,8 @@ return (
     <div className="RosterWidget">
         <h2>My Roster</h2>
         <div className='RosterDisplay'>
-            {rosterList.sort().filter((player: Player) => !(player.getLocation() === Source.ROSTER)).map((player: Player, index) => (
-                <PlayerWidget key={player.getNumber()} player={player} location={Source.ROSTER} />
+            {rosterList.filter((player: Player) => (player.getLocation() === Source.ROSTER)).map((player: Player, index) => (
+                <PlayerWidget key={player.getId()} player={player} location={Source.ROSTER} draggable={true} />
             ))}
         </div>
         <Button id='showModal' onClick={() => displayAddPlayerModal(true)}>

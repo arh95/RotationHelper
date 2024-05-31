@@ -35,7 +35,7 @@ function App() {
   }
 
   function updatePlayer(updatedPlayer:Player) {
-    removePlayerById(updatedPlayer.getNumber());
+    removePlayerById(updatedPlayer.getId());
   }
 
   function removePlayerById(id:number):Player{
@@ -75,6 +75,10 @@ function App() {
       <h2>
         Rotation Tool
       </h2>
+      <p className='description'>
+        Welcome to the interactive volleyball rotation tool! In the roster section, you can create players with specified positions to fill out your roster,
+        and drag and drop them onto the court section to set up your rotation. 
+      </p>
       <Roster players={playerList} addPlayer={addPlayer} deletePlayer={() => {}} editPlayer={updatePlayer} key={1} />
       <Court />
       <Button onClick={exportRotation}>

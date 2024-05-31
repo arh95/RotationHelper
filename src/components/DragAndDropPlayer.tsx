@@ -6,7 +6,7 @@ export class DragAndDropPlayer extends Player {
 
     constructor (player:Player) {
         super(player.name, player.playerType);
-        this.setNumber(player.num);
+        this.setId(player.id);
         this.setPlayerLink(player.playerLink);
         this.setActive(player.active);
         this.setServing(player.serving);

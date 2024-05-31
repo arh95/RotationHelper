@@ -7,12 +7,13 @@ import Button from '@mui/material/Button';
 import './RosterWidget.css';
 import AddPlayerModal from './AddPlayerModal';
 import PlayerWidget from './PlayerWidget';
+import { IRosterProps } from './IProps';
 
-function Roster() {
+function Roster({players, key}: IRosterProps) {
 
-    const [rosterList, setRosterList] = useState(new Array<Player>());
+    const [rosterList, setRosterList] = useState(players);
     const [showAddPlayerModal, setShowAddPlayerModal] = useState(false);
-    const nextValidPlayerNumber: MutableRefObject<number> = useRef(1);
+    const nextId: MutableRefObject<number> = useRef(1);
 
     //TODO: add collapse/expand roster section controls (introduce accordion panel?)
 
@@ -50,12 +51,17 @@ function Roster() {
         }
     }
 
-
+function dropOntoRoster(event: React.DragEvent) {
+    
+}
 
 function addPlayerToRoster(newPlayer: Player) {
 
 
-    newPlayer.setNumber(generatePlayerNumber());
+    newPlayer.setId(nextId.current);
+    nextId.current++;
+    newPlayer.setLocation(Source.ROSTER);
+    // newPlayer.setNumber(generatePlayerNumber());
     let rosterListCopy: Player[] = [];
     Position.getValidPositions().forEach((position) => {
         console.log(position.getLabel);
@@ -87,17 +93,12 @@ function resetAddPlayerModal() {
 
 }
 
-
-
-
-
 return (
     <div className="RosterWidget">
-
+        <h2>My Roster</h2>
         <div className='RosterDisplay'>
-
-            {rosterList.filter((player: Player) => !player.isOnCourt()).map((player: Player, index) => (
-                <PlayerWidget key={player.getNumber()} player={player} source={Source.ROSTER} />
+            {rosterList.sort().filter((player: Player) => !(player.getLocation() === Source.ROSTER)).map((player: Player, index) => (
+                <PlayerWidget key={player.getNumber()} player={player} location={Source.ROSTER} />
             ))}
         </div>
         <Button id='showModal' onClick={() => displayAddPlayerModal(true)}>

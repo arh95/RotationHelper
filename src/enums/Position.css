@@ -1,28 +1,85 @@
 .OH {
-    background-color: #4858E7;
+    &.ROSTER {
+        background-color: #4858E7;
+    }
+    &.COURT {
+        display: flex;
+        justify-content: center;
+        background-image: url('../../assets/PlayerCardBackgrounds/outsideBackground.jpg');
+    }
+    background-size: 92px;
 }
 .S {
-    background-color: #35D086;
+    &.ROSTER {
+        background-color: #35D086;
+    }
+    &.COURT {
+            display: flex;
+        justify-content: center;
+        background-image: url('../../assets/PlayerCardBackgrounds/SetterBackground.jpg');
+    }
+
+    background-size: 92px;
 }
 .M {
-    background-color: #EFE56A;
+    &.ROSTER {
+        background-color: #EFE56A;
+    }
+    &.COURT {
+        display: flex;
+        justify-content: center;
+        background-image: url('../../assets/PlayerCardBackgrounds/MiddleBackground.jpg');
+    }
+
+    background-size: 92px;
 }
 .OPP {
-    background-color: #FF2D5F;
+    &.ROSTER {
+        background-color: #FF2D5F;
+    }
+    &.COURT {
+        display: flex;
+        justify-content: center;
+        background-image: url('../../assets/PlayerCardBackgrounds/oppoBackgroung.jpg');
+    }
+    background-size: 92px;
 }
 .L {
-    background-color:#7C00DD;
+    &.ROSTER {
+        background-color: #7C00DD;
+    }
+    &.COURT {
+        display: flex;
+        justify-content: center;
+        background-image:url('../../assets/PlayerCardBackgrounds/LiberoBackground.jpg');
+    }
+
+    background-size: 92px;
 }
 .NONE {
-    background-color: brown;
-}
-/* TODO: allow for 'other' non specific position */
-.OTHER {
     background-color: #FF9A3E;
 }
 .DS {
-    background-color: #FFC2F5;
+    &.ROSTER {
+        background-color: #FFC2F5;
+    }
+    &.COURT {
+        display: flex;
+        justify-content: center;
+        background-image: url('../../assets/PlayerCardBackgrounds/DefenseSpecialBgrd.jpg');
+    }
+
+    background-size: 92px;
 }
 .SS {
-    background-color: #67D1FF;
+    &.ROSTER {
+        background-color: #67D1FF;
+    }
+    &.COURT {
+        display: flex;
+        justify-content: center;
+        background-image: url('../../assets/PlayerCardBackgrounds/ServeSpecialBgrd.jpg');
+    }
+
+    background-size: 92px;
 }

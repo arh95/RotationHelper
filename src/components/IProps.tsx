@@ -7,10 +7,18 @@ export interface IPlayerProps {
     key: number
 }
 
+export interface IRosterProps {
+    players: Player[]
+    addPlayer:(val:Player)=> void,
+    deletePlayer:(val:Player)=> void,
+    editPlayer:(val:Player)=>void,
+    key: number
+}
+
 export interface IDragAndDropProps {
     player: Player
+    location: Source
     key: number
-    source: Source
 }
 
 export interface IModalProps {

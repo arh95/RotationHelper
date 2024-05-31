@@ -5,11 +5,12 @@ export class DragAndDropPlayer extends Player {
     source:string;
 
     constructor (player:Player) {
-        super(player.name, player.playerType, player.currentPosition);
+        super(player.name, player.playerType);
         this.setNumber(player.num);
         this.setPlayerLink(player.playerLink);
-        this.setOnCourt(player.onCourt);
+        this.setActive(player.active);
         this.setServing(player.serving);
+        this.setLocation(player.location);
         console.log(this);
     }
 
@@ -25,6 +26,8 @@ export class DragAndDropPlayer extends Player {
     public toString(): string {
         return JSON.stringify(this);
     }
+
+    
 
     // public static revive(playerToRevive:DragAndDropPlayer):DragAndDropPlayer {
         

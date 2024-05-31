@@ -6,6 +6,7 @@ import { Player } from './Player';
 import { Position } from '../enums/Position';
 import { ChangeEventHandler, useState, useRef, MutableRefObject } from 'react';
 
+//TODO: reuse this modal for edit player functionality?
 export default function AddPlayerModal({ isOpen, cancelAction, submitAction }: IModalProps) {
 
     const [options, setOptions]= useState(Position.getValidPositions());
@@ -14,7 +15,7 @@ export default function AddPlayerModal({ isOpen, cancelAction, submitAction }: I
 
 
     function createNewPlayer(): Player {
-        let newPlayer: Player = new Player(playerName.current, playerPosition.current, -1);
+        let newPlayer: Player = new Player(playerName.current, playerPosition.current);
         resetWidgetState();
         return newPlayer;
     }

@@ -4,6 +4,22 @@
   flex-direction: column;
   align-items: center;
 }
+@font-face {
+  font-family: 'Bebas Neue';
+  src: url('../assets/fonts/Bebas_Neue/BebasNeue-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'General Sans';
+  src: url('../assets/fonts/GeneralSans_Complete/Fonts/TTF/GeneralSans-Variable.ttf');
+}
+* {
+  font-family: 'General Sans'  !important;
+}
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Bebas Neue'  !important;
+}
+
 
 .App-logo {
   height: 40vmin;
@@ -39,3 +55,4 @@
     transform: rotate(360deg);
   }
 }
+

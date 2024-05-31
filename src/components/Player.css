@@ -6,6 +6,7 @@
     flex-direction: column;
     justify-content: space-between;
     width: 92px;
+    height: 92px;
     
     .PlayerName {
         margin-bottom: 2px;

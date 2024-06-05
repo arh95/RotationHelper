@@ -1,8 +1,10 @@
 **WIP**
 
+6/5/24 NOTE: Had to stop servers to save money, so app will not be available at all times. If you'd like to see the app deployed to production, feel free to reach out and i can spin things up for you
+
 The Rotation Helper is meant to be a tool for volleyball captains to easily draw up different rotations of their players, including substitutions and liberos, on the go. The intent is to deploy this app as a mobile-optimized web page that I can distribute to my local volleyball rec league. 
 
-This repo is currently integrated with AWS Amplify, and you can access a deployed version of the main branch's latest code here: https://main.d3qbeni7s82jdw.amplifyapp.com
+~This repo is currently integrated with AWS Amplify, and you can access a deployed version of the main branch's latest code here: https://main.d3qbeni7s82jdw.amplifyapp.com~
 
 Explanation of Volleyball Rotations: <br/>
 https://www.ncaa.com/news/volleyball-women/article/2023-07-09/college-volleyball-rotation-explained
